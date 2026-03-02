@@ -1,10 +1,16 @@
 // ─── Auth & User ───────────────────────────────────────────────────────────────
 
 /** Tên role thực tế từ API (roleName field) */
-export type ApiRoleName = 'Admin' | 'Seller' | 'Buyer' | 'Recruiter' | 'Candidate' | string;
+export type ApiRoleName =
+  | "Admin"
+  | "Seller"
+  | "Buyer"
+  | "Recruiter"
+  | "Candidate"
+  | string;
 
 /** Role nội bộ dùng trong app (lowercase) */
-export type UserRole = 'admin' | 'seller' | 'buyer' | 'recruiter' | 'candidate';
+export type UserRole = "admin" | "seller" | "buyer" | "recruiter" | "candidate";
 
 /** Một role entry trong mảng roles[] từ API */
 export interface ApiRole {
@@ -38,7 +44,7 @@ export interface ApiUserProfile {
   createdAt: string;
   updatedAt: string;
   approvedAt?: string | null;
-  approvalStatus: 'approved' | 'pending' | 'rejected';
+  approvalStatus: "approved" | "pending" | "rejected";
   isActive: boolean;
   roles: ApiRole[];
 }
@@ -66,7 +72,7 @@ export interface User {
 
 /** Hàm helper: chuyển ApiUserProfile → User */
 export function normalizeUser(profile: ApiUserProfile): User {
-  const primaryRoleName = profile.roles?.[0]?.roleName ?? 'candidate';
+  const primaryRoleName = profile.roles?.[0]?.roleName ?? "candidate";
   return {
     id: profile.id,
     username: profile.username,
@@ -86,13 +92,14 @@ export function normalizeUser(profile: ApiUserProfile): User {
 }
 
 export interface LoginRequest {
+  email: string;
   username: string;
   password: string;
 }
 
 export interface RegisterRequest {
-  username: string;
   email: string;
+  username: string;
   password: string;
   firstName: string;
   lastName: string;
@@ -138,16 +145,16 @@ export interface ApiError {
 
 // ─── Transfer (Sang nhượng) ────────────────────────────────────────────────────
 export type TransferCategory =
-  | 'restaurant'
-  | 'cafe'
-  | 'shop'
-  | 'office'
-  | 'warehouse'
-  | 'spa'
-  | 'gym'
-  | 'other';
+  | "restaurant"
+  | "cafe"
+  | "shop"
+  | "office"
+  | "warehouse"
+  | "spa"
+  | "gym"
+  | "other";
 
-export type TransferStatus = 'active' | 'pending' | 'sold' | 'closed';
+export type TransferStatus = "active" | "pending" | "sold" | "closed";
 
 export interface Transfer {
   id: string;
@@ -187,7 +194,7 @@ export interface TransferOffer {
   transferId: string;
   offerPrice: number;
   message: string;
-  status: 'pending' | 'accepted' | 'rejected';
+  status: "pending" | "accepted" | "rejected";
   author: User;
   createdAt: string;
 }
@@ -206,12 +213,23 @@ export interface TransferFilter {
   status?: TransferStatus;
   page?: number;
   limit?: number;
-  sort?: 'newest' | 'price_asc' | 'price_desc';
+  sort?: "newest" | "price_asc" | "price_desc";
 }
 
 // ─── Job (Việc làm) ────────────────────────────────────────────────────────────
-export type JobType = 'fulltime' | 'parttime' | 'freelance' | 'internship' | 'remote';
-export type JobLevel = 'intern' | 'junior' | 'middle' | 'senior' | 'lead' | 'manager';
+export type JobType =
+  | "fulltime"
+  | "parttime"
+  | "freelance"
+  | "internship"
+  | "remote";
+export type JobLevel =
+  | "intern"
+  | "junior"
+  | "middle"
+  | "senior"
+  | "lead"
+  | "manager";
 
 export interface Job {
   id: string;
@@ -229,7 +247,7 @@ export interface Job {
   industry: string;
   skills?: string[];
   deadline: string;
-  status: 'active' | 'closed' | 'draft';
+  status: "active" | "closed" | "draft";
   author: User;
   applicationCount: number;
   viewCount: number;
@@ -257,7 +275,7 @@ export interface JobApplication {
   jobId: string;
   coverLetter: string;
   cvUrl?: string;
-  status: 'pending' | 'reviewing' | 'shortlisted' | 'accepted' | 'rejected';
+  status: "pending" | "reviewing" | "shortlisted" | "accepted" | "rejected";
   author: User;
   createdAt: string;
   updatedAt: string;
@@ -276,5 +294,5 @@ export interface JobFilter {
   search?: string;
   page?: number;
   limit?: number;
-  sort?: 'newest' | 'salary_asc' | 'salary_desc';
+  sort?: "newest" | "salary_asc" | "salary_desc";
 }

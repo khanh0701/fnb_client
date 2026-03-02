@@ -1,4 +1,4 @@
-import http from './http';
+import http from "./http";
 import type {
   LoginRequest,
   LoginApiResponse,
@@ -7,8 +7,8 @@ import type {
   User,
   ApiUserProfile,
   normalizeUser as NormalizeUser,
-} from '@/types';
-import { normalizeUser } from '@/types';
+} from "@/types";
+import { normalizeUser } from "@/types";
 
 export const authApi = {
   /**
@@ -16,7 +16,7 @@ export const authApi = {
    * Sau đó cần gọi getProfile() để lấy thông tin user + roles
    */
   login: (body: LoginRequest) =>
-    http.post<LoginApiResponse>('/auth/login', body).then((r) => r.data),
+    http.post<LoginApiResponse>("/auth/login", body).then((r) => r.data),
 
   /**
    * Lấy thông tin user + roles — response shape: { data: ApiUserProfile }
@@ -24,15 +24,15 @@ export const authApi = {
    */
   getProfile: () =>
     http
-      .get<ProfileApiResponse>('/users/profile')
+      .get<ProfileApiResponse>("/users/profile")
       .then((r) => normalizeUser(r.data.data)),
 
   /**
    * Cập nhật hồ sơ — response shape tuỳ backend, ta normalize lại
    */
-  updateProfile: (body: UpdateProfileRequest) =>
+  updateProfile: (id: string, body: UpdateProfileRequest) =>
     http
-      .put<ProfileApiResponse>('/users/profile', body)
+      .patch<ProfileApiResponse>(`/admin-users/${id}`, body)
       .then((r) => normalizeUser(r.data.data)),
 
   /**
@@ -44,14 +44,13 @@ export const authApi = {
     password: string;
     firstName: string;
     lastName: string;
-  }) =>
-    http.post<LoginApiResponse>('/auth/register', body).then((r) => r.data),
+  }) => http.post<LoginApiResponse>("/auth/register", body).then((r) => r.data),
 
   /**
    * Refresh token
    */
   refreshToken: (refreshToken: string) =>
     http
-      .post<LoginApiResponse>('/auth/refresh', { refresh_token: refreshToken })
+      .post<LoginApiResponse>("/auth/refresh", { refresh_token: refreshToken })
       .then((r) => r.data),
 };
